@@ -1,9 +1,71 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
-public class JImageDisplay {
+public class JImageDisplay extends JPanel {
 	
-	public static void main (String[] args) {
+	// Состояния
+	private int width;
+	private int height;
+	
+	// Картинка в буффере - на ней будем рисовать
+	private BufferedImage bImg;
+	
+	// Рычаг для рисования
+	private Graphics g;
+	
+	/*
+	* Конструкторы
+	*/
+	public JImageDisplay() {
 		
+	}
+	
+	public JImageDisplay(int size) {
+		this(size, size);
+	}
+	
+	public JImageDisplay(int width, int height) {
+		this.width = width;
+		this.height = height;	
+		
+		// Создание буферной картинки
+		bImg = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
+		
+		// Получение объекта Graphics от объекта BufferedImage
+		g = bImg.getGraphics();
+		
+		// Установка базового изображения
+		this.repaint();
+	}
+	
+	/*
+	* Непосредственно рисование
+	*/
+	public void drawPixel(int x, int y, Color color) {
+		// Установка необходимого цвета
+		g.setColor(color);
+		
+		// Закрашиване необходимого пикселя
+		g.drawLine(x, y, x, y);
+	}
+	
+	/*
+	* Реакция на рисование на элементе, также вызывается при активации frame, и при вызове repaint()
+	*/
+	@Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(bImg, 0, 0, null);
+    }
+	
+	/*
+	* "Очистка" пикселей элемента - на деле просто закрашиваение всего пространства чёрным прямоугольником
+	*/
+	public void clearImage() {
+		g.setColor(Color.black);
+		g.fillRect(0, 0, bImg.getWidth(), bImg.getHeight());
+		this.repaint();
 	}
 	
 }
