@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
 public class Mandelbrot extends FractalGenerator{
 	
 	// Количество итераций, наобходимое для определения принадлежности точки множеству.
-	public static final int MAX_ITERATIONS = 2000;
+	public static final int MAX_ITERATIONS = 500;
 	
 	public Mandelbrot() {
 		

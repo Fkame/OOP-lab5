@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.event.*;
 
 public class FractalExplorer {
 	
@@ -12,6 +13,52 @@ public class FractalExplorer {
 	private JFrame frame;
 	private JButton button;
 	private Mandelbrot mandelbrot;
+	
+	/*
+	* Классы-слушатели событий кнопки и мыши
+	*/
+	private class resetButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Reset button clicked!");
+			
+			// Сброс границ фрактала и вызов функции отрисовки
+			mandelbrot.getInitialRange(range);
+			FractalExplorer.this.drawFractal();
+		}
+	}
+	
+	private class mouseClickListener implements MouseListener {
+		
+		// Событие нажатия на кнопку мыщи
+		public void mouseClicked(MouseEvent e) {
+			System.out.println("Mouse button clicked!");
+			
+			// Координаты клика мыши
+			int x = e.getX();
+			int y = e.getY();
+			
+			// Перевод координат в комплексную плоскость
+			double xCoord = FractalGenerator.getCoord(range.x, range.x + range.width, display.getWidth(), x);
+			double yCoord = FractalGenerator.getCoord(range.y, range.y + range.height, display.getHeight(), y);
+			
+			// Масштабирование
+			mandelbrot.recenterAndZoomRange(range, xCoord, yCoord, 0.5);
+			
+			// Перерисовка фрактала
+			FractalExplorer.this.drawFractal();	
+		}
+		
+		/*
+		* Need just to override them (error with russian words here)
+		*/
+		public void mouseEntered(MouseEvent e) {}
+ 
+        public void mouseExited(MouseEvent e) {}
+ 
+        public void mousePressed(MouseEvent e) {}
+ 
+        public void mouseReleased(MouseEvent e) {}
+	}
 	
 	
 	/*
@@ -32,8 +79,11 @@ public class FractalExplorer {
 		// Создание объекта, содержащего диапазон
 		this.range = new Rectangle2D.Double();
 		
-		// Создание класса Mandelbrot
+		// Создание объекта Mandelbrot
 		this.mandelbrot = new Mandelbrot();
+		
+		// Задание пределов фрактала
+		mandelbrot.getInitialRange(range);	
 	}
 	
 	/*
@@ -50,12 +100,20 @@ public class FractalExplorer {
 		this.button = new JButton("Reset display");
 		frame.getContentPane().add(BorderLayout.SOUTH, this.button);
 		
+		// Добавление слушателя нажатия на кнопку
+		button.addActionListener(new resetButtonListener());
+		
 		// Добавить подгон квадратной области после добавления кнопки
 		// ...
 		
 		// Создание панели рисования
 		this.display = new JImageDisplay(this.frame.getWidth(), this.frame.getHeight());
 		frame.getContentPane().add(BorderLayout.CENTER, this.display);
+		
+		// Добавление слушателя нажатия мыши по элементу
+		display.addMouseListener(new mouseClickListener());
+		
+		// Добавление прослушивателя для нажатию по мыши
 		
 		frame.setVisible(true);
 	}
@@ -67,8 +125,6 @@ public class FractalExplorer {
 	*/
 	public void drawFractal() {
 		
-		// Задание пределов фрактала
-		mandelbrot.getInitialRange(range);
 		System.out.println("Range = " + range.x + ", " + range.y + ", " + range.width + ", " + range.height + "\n");
 		
 		for (int x = 0; x < this.width; x++) {
