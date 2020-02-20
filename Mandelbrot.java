@@ -9,10 +9,14 @@ public class Mandelbrot extends FractalGenerator{
 	// Количество итераций, наобходимое для определения принадлежности точки множеству.
 	public static final int MAX_ITERATIONS = 2000;
 	
+	public Mandelbrot() {
+		
+	}
+	
 	@Override 
 	public void getInitialRange(Rectangle2D.Double range) {
 		range.x = -2;
-		range.y = -1;
+		range.y = -1.5;
 		range.width = 3;
 		range.height = 3;
 	}
@@ -31,9 +35,12 @@ public class Mandelbrot extends FractalGenerator{
 		double realPart = 0;
 		double imaginaryPart = 0;
 		
-		while (iteration++ < MAX_ITERATIONS && (realPart * realPart + imaginaryPart * imaginaryPart) < 4) {
-			realPart = realPart * realPart - imaginaryPart * imaginaryPart + x;
-			imaginaryPart = 2 * realPart * imaginaryPart + y;
+		while ((iteration < MAX_ITERATIONS) && ((realPart * realPart + imaginaryPart * imaginaryPart) < 4)) {
+			double rp = realPart * realPart - imaginaryPart * imaginaryPart + x;
+			double ip = 2 * realPart * imaginaryPart + y;
+			realPart = rp;
+			imaginaryPart = ip;
+			iteration += 1;
 		}
 		
 		// -1 - точка принадлежит последовательности, iteration - не принадлежит. Также определяется, на сколько она близко.

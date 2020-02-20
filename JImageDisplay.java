@@ -36,6 +36,7 @@ public class JImageDisplay extends JPanel {
 		g = bImg.getGraphics();
 		
 		// Установка базового изображения
+		this.setStartImage();
 		this.repaint();
 	}
 	
@@ -47,7 +48,9 @@ public class JImageDisplay extends JPanel {
 		g.setColor(color);
 		
 		// Закрашиване необходимого пикселя
-		g.drawLine(x, y, x, y);
+		g.fillRect(x, y, 1, 1);
+		
+		this.repaint();
 	}
 	
 	/*
@@ -68,4 +71,16 @@ public class JImageDisplay extends JPanel {
 		this.repaint();
 	}
 	
+	public void setStartImage() {
+		g.setColor(Color.orange);
+		g.fillRect(bImg.getWidth() / 2 - 51, bImg.getHeight() / 2 - 51, 100, 100);	
+		g.setColor(Color.white);
+		g.fillRect(bImg.getWidth() / 2 - 25, bImg.getHeight() / 2 - 25, 50, 50);
+		
+		g.setColor(Color.orange);
+		g.fillRect(bImg.getWidth() / 2 - 13, bImg.getHeight() / 2 - 13, 25, 25);	
+		g.setColor(Color.white);
+		g.fillRect(bImg.getWidth() / 2 - 7, bImg.getHeight() / 2 - 7, 13, 13);
+		this.repaint();
+	}
 }
