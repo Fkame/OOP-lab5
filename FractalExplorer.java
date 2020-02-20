@@ -19,7 +19,7 @@ public class FractalExplorer {
 	*/
 	private class resetButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			System.out.println("Reset button clicked!");
+			//System.out.println("Reset button clicked!");
 			
 			// Сброс границ фрактала и вызов функции отрисовки
 			mandelbrot.getInitialRange(range);
@@ -31,7 +31,7 @@ public class FractalExplorer {
 		
 		// Событие нажатия на кнопку мыщи
 		public void mouseClicked(MouseEvent e) {
-			System.out.println("Mouse button clicked!");
+			//System.out.println("Mouse button clicked!");
 			
 			// Координаты клика мыши
 			int x = e.getX();
@@ -41,8 +41,17 @@ public class FractalExplorer {
 			double xCoord = FractalGenerator.getCoord(range.x, range.x + range.width, display.getWidth(), x);
 			double yCoord = FractalGenerator.getCoord(range.y, range.y + range.height, display.getHeight(), y);
 			
-			// Масштабирование
-			mandelbrot.recenterAndZoomRange(range, xCoord, yCoord, 0.5);
+			// Нажатие левой кнопкой мыши
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				// Масштабирование
+				mandelbrot.recenterAndZoomRange(range, xCoord, yCoord, 0.5);
+			}
+			
+			// Нажатие правой кнопкой мыши
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				// Масштабирование
+				mandelbrot.recenterAndZoomRange(range, xCoord, yCoord, 1.5);
+			}
 			
 			// Перерисовка фрактала
 			FractalExplorer.this.drawFractal();	
@@ -125,7 +134,7 @@ public class FractalExplorer {
 	*/
 	public void drawFractal() {
 		
-		System.out.println("Range = " + range.x + ", " + range.y + ", " + range.width + ", " + range.height + "\n");
+		//System.out.println("Range = " + range.x + ", " + range.y + ", " + range.width + ", " + range.height + "\n");
 		
 		for (int x = 0; x < this.width; x++) {
 			for (int y = 0; y < this.height; y++) {
